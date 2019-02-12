@@ -75,8 +75,7 @@ async postData(url: string,
   				options: object = {}) {
     // options = { responseType: 'text' }
     return await this.http.post(url, 
-    							body, 
-    							options).toPromise();
+    	body, options).toPromise();
 }
 async getData(url: string, options: object = {}) {
     // options = { responseType: 'text' }
@@ -101,7 +100,7 @@ myMethod() {
 ### Navigating from html
 ```
 <ion-button routerLink="/dashboard"
-			routerDirection="forward">
+	routerDirection="forward">
 	Go to Dashboard
 </ion-button>
 ```
