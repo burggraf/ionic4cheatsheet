@@ -3,7 +3,12 @@ This page is designed to help you to quickly do those things you've already figu
 
 ## Storage
 
-### app.module.ts:
+### IonicStorageModule (localStorage)
+```
+npm install @ionic/storage --save
+```
+
+##### app.module.ts:
 
 ```
 import { IonicStorageModule } from '@ionic/storage';
@@ -12,13 +17,38 @@ imports[
 ]
 ```
 
-### my.page.ts:
+##### my.page.ts:
 
 ```
 import { Storage } from '@ionic/storage';
 constructor(private storage: Storage) {
     this.storage.get('key');
     this.storage.set('key', 'value');
+}
+```
+
+### PouchDB
+```
+npm install pouchdb --save
+```
+
+##### polyfills.ts
+```
+(window as any).global = window;
+```
+
+##### my.page.ts
+```
+import PouchDB from 'pouchdb';
+```
+
+```
+private localDB: any;
+async initDB() {
+   this.localDB = await new PouchDB('localDB');
+}
+async get(id: string, options) {
+      return await this.localDB.get(id, options);
 }
 ```
 
