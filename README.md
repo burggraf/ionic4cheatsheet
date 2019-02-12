@@ -74,8 +74,7 @@ async postData(url: string,
 				body: object, 
   				options: object = {}) {
     // options = { responseType: 'text' }
-    return await this.http.post(url, 
-    	body, options).toPromise();
+    return await this.http.post(url, body, options).toPromise();
 }
 async getData(url: string, options: object = {}) {
     // options = { responseType: 'text' }
