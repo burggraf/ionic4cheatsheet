@@ -51,6 +51,60 @@ async get(id: string, options) {
       return await this.localDB.get(id, options);
 }
 ```
+## Networking
+### http
+##### app.module.ts
+```
+import { HttpClientModule } from '@angular/common/http';
+```
+```
+imports: [
+    HttpClientModule
+  ]
+```
+##### my.page.ts
+```
+import { HttpClient } from '@angular/common/http';
+```
+```
+constructor(private http: HttpClient) { }
+```
+```
+async postData(url: string, 
+				body: object, 
+  				options: object = {}) {
+    // options = { responseType: 'text' }
+    return await this.http.post(url, 
+    							body, 
+    							options).toPromise();
+}
+async getData(url: string, options: object = {}) {
+    // options = { responseType: 'text' }
+	return await this.http.get(url, options).toPromise();
+}
+```
+## Navigation
+
+### Navigating from code
+
+```
+import { Router } from '@angular/router';
+```
+```
+constructor(private router: Router) { }
+```
+```
+myMethod() {
+	this.router.navigateByUrl('/dashboard');
+}
+```
+### Navigating from html
+```
+<ion-button routerLink="/dashboard"
+			routerDirection="forward">
+	Go to Dashboard
+</ion-button>
+```
 
 
 
