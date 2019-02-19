@@ -158,7 +158,23 @@ myMethod() {
 	Go to Dashboard
 </ion-button>
 ```
-
+### Passing data (id) to page through url
+##### app-routing.module.ts
+```
+{ path: 'detail/:id', loadChildren: './pages/detail/detail.module#DetailPageModule' },
+```
+##### detail.page.ts
+```
+import { ActivatedRoute } from '@angular/router';
+```
+```
+constructor(private route: ActivatedRoute) { }
+```
+```
+ionViewWillEnter(){
+  const id = this.route.snapshot.paramMap.get('id');
+}
+```
 ## Styles & CSS
 ### Colors
 * primary => var(--ion-color-primary)
