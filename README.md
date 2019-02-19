@@ -51,6 +51,61 @@ async get(id: string, options) {
       return await this.localDB.get(id, options);
 }
 ```
+### Encrypted PouchDB
+```
+npm install pouchdb --save
+npm install crypto-js --save
+nmp install transform-pouch --save
+```
+##### polyfills.ts
+```
+(window as any).global = window;
+(window as any).process = window;
+```
+##### my.page.ts
+```
+import PouchDB from 'pouchdb';
+import CryptoJS from 'crypto-js';
+import TransformPouch from 'transform-pouch';
+PouchDB.plugin(TransformPouch);
+```
+```
+private localDB: any;
+
+async initDB(key: string) {
+  this.localDB = await new PouchDB('localDB');
+  this.localDB.transform({
+    incoming: function (doc) {
+      Object.keys(doc).forEach(function (field) {
+        if (field.substr(0, 1) !== '_') {
+          doc[field] = CryptoJS.AES.encrypt(doc[field], key).toString();
+        }
+      });
+      return doc;
+    },
+    outgoing: function (doc) {
+      Object.keys(doc).forEach(function (field) {
+        if (field.substr(0, 1) !== '_') {
+          const bytes  = CryptoJS.AES.decrypt(doc[field], key);
+          doc[field] = bytes.toString(CryptoJS.enc.Utf8);
+        }
+      });
+      return doc;
+    }
+  });
+  return await this.localDB.info();
+}
+
+use_db() {
+  this.initDB('secret key 123').then((info) => {
+    this.localDB.allDocs({include_docs: true})
+    .then((docs) => {
+      console.log('docs', docs);
+    });
+  });
+}
+  
+```
 ## Networking
 ### http
 ##### app.module.ts
@@ -115,6 +170,27 @@ myMethod() {
 * light => var(--ion-color-light)
 * medium => var(--ion-color-medium)
 * dark => var(--ion-color-dark)
+
+## Shared Custom Components
+##### Generate first component
+```
+ionic g component components/mycomponent
+ionic g module components/shared
+```
+##### shared.module.ts:
+
+1. import component
+2. add to declarations [ ]
+3. add to exports [ ]
+
+##### To consume:
+```
+import { SharedModule } from '../../components/shared.module';
+```
+* add to imports [ ]
+* use tag in html file
+
+Adding new components with:  ```ionic g component components/newcomponent``` will automatically update shared.module.ts.
 
 
 
