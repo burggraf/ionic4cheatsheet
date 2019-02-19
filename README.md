@@ -171,7 +171,7 @@ import { ActivatedRoute } from '@angular/router';
 constructor(private route: ActivatedRoute) { }
 ```
 ```
-ionViewWillEnter(){
+ionViewWillEnter() {
   const id = this.route.snapshot.paramMap.get('id');
 }
 ```
