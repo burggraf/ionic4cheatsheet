@@ -78,6 +78,12 @@ async initDB(key: string) {
     incoming: function (doc) {
       Object.keys(doc).forEach(function (field) {
         if (field.substr(0, 1) !== '_') {
+          console.log('encrypting field: ' + field + ' ' + typeof doc[field]);
+          console.log('contents: ', doc[field]);
+          console.log('key: ' + key);
+          if (typeof doc[field] !== 'string') {
+            doc[field] = 'OBJ!' + JSON.stringify(doc[field]);
+          }
           doc[field] = CryptoJS.AES.encrypt(doc[field], key).toString();
         }
       });
@@ -86,8 +92,11 @@ async initDB(key: string) {
     outgoing: function (doc) {
       Object.keys(doc).forEach(function (field) {
         if (field.substr(0, 1) !== '_') {
-          const bytes  = CryptoJS.AES.decrypt(doc[field], key);
+          const bytes = CryptoJS.AES.decrypt(doc[field], key);
           doc[field] = bytes.toString(CryptoJS.enc.Utf8);
+          if (doc[field].substr(0, 4) === 'OBJ!') {
+            doc[field] = JSON.parse(doc[field].substr(4));
+          }
         }
       });
       return doc;
