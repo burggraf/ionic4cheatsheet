@@ -217,6 +217,37 @@ import { SharedModule } from '../../components/shared.module';
 
 Adding new components with:  ```ionic g component components/newcomponent``` will automatically update shared.module.ts.
 
+## BehaviorSubject and Subscribers
 
+##### set up BehaviorSubject
+```
+import { BehaviorSubject } from 'rxjs';
+```
+```
+private _currentUser = null;
+public user = new BehaviorSubject<string>(null);
+init() {
+  this._currentUser = { firstname: 'Bob' };
+  this.user.next(this._currentUser);
+}
+changeUser() {
+  this._currentUser = { firstname: 'Harry' };
+  this.user.next(this._currentUser);
+}
+```
+##### consume BehaviorSubject
+```
+import { UserService } from '../../services/user.service';
+```
+```
+currentUser = null;
+constructor(private userService: UserService) { }
+ngOnInit() {
+  this.userService.user.subscribe((user) => {
+    this.currentUser = user;
+    console.log('user set to:', this.currentUser);
+  });
+}
+```
 
 
