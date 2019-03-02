@@ -249,5 +249,12 @@ ngOnInit() {
   });
 }
 ```
+## Prevent Propagation
+```
+<ion-button
+(click)="$event.preventDefault();$event.stopPropagation();doSomething()">
+  I am inside another clickable item
+</ion-button>
+```
 
 
