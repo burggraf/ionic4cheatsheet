@@ -45,10 +45,10 @@ import PouchDB from 'pouchdb';
 ```
 private localDB: any;
 async initDB() {
-   this.localDB = await new PouchDB('localDB');
+	this.localDB = await new PouchDB('localDB');
 }
 async get(id: string, options) {
-      return await this.localDB.get(id, options);
+	return await this.localDB.get(id, options);
 }
 ```
 ### Encrypted PouchDB
@@ -146,6 +146,15 @@ async getData(url: string, options: object = {}) {
 }
 ```
 ## Navigation
+### Hash Routing
+This is necessary for PWA applications.
+##### app-routing.module.ts
+```
+@NgModule({
+imports: [RouterModule.forRoot(routes, { useHash: true })],
+exports: [RouterModule]
+})
+```
 
 ### Navigating from code
 
@@ -255,6 +264,11 @@ ngOnInit() {
   (click)="$event.preventDefault();$event.stopPropagation();doSomething()">
   I am inside another clickable item
 </ion-button>
+```
+## Generate PWA
+```
+ng add @angular/pwa --project app
+ionic build --prod
 ```
 
 
